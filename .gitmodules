@@ -1,0 +1,3 @@
+[submodule "convnet2"]
+	path = convnet2
+	url = https://github.com/jmsaavedrar/convnet2
