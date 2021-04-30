@@ -206,7 +206,8 @@ def run_model(mode, model, opt, datasets, config, train_cbs=None, test_cbs=None)
         )
 
         # save history
-        with open('history-train', 'wb') as file_pi:
+        path_hist = config.get_snapshot_dir() + 'history-train.pkl'
+        with open(path_hist, 'wb') as file_pi:
             pickle.dump(history.history, file_pi)
 
         return history
