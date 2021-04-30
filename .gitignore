@@ -1,6 +1,6 @@
 ./*/data/
 ./*/snapshots/
-
+./*/__pycache__/
 
 # ========== PYTHON RELATED ============= #
 
