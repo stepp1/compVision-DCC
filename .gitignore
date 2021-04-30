@@ -1,8 +1,8 @@
-./*/.idea/
-./*/data/
-./*/snapshots/
-./*/__pycache__/
-./*/*/*.h5
+/*/.idea/
+/*/data/
+/*/snapshots/
+/*/__pycache__/
+/*/*/*.h5
 
 
 # ========== PYTHON RELATED ============= #
