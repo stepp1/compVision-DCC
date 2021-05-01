@@ -41,6 +41,7 @@ import pickle
 # set the convnet2 path
 sys.path.append("/home/step/Personal/UCH/2021-sem1/VisionComp/convnet2")
 
+# import resnext
 from models import resnet, alexnet
 import datasets.data as data
 import utils.configuration as conf
@@ -130,11 +131,16 @@ def create_model(config, model_name, in_shape, only_test_input=None, use_mixed=F
         if model_name == 'resnet-34':
             model = resnet.ResNet([3, 4, 6, 3], [64, 128, 256, 512], config.get_number_of_classes(), se_factor=0)
             print('Model is Resnet-34')
+
+        if model_name == 'resnext':
+            model = resnet.ResNext([3, 4, 6, 3], config.get_number_of_classes(), se_factor=0)
+            print('Model is Resnext-50')
+
         elif model_name == 'resnet-50':
-            model = resnet.ResNet([3, 4, 6, 3], [64, 128, 256, 512], config.get_number_of_classes(),
-                                  use_bottleneck=True)
+            model = resnet.ResNet([3, 4, 6, 3], [64, 128, 256, 512], config.get_number_of_classes(), use_bottleneck=True)
             print('Model is Resnet-50')
-        elif model_name == 'resnet-50':
+        
+        elif model_name == 'alexnet':
             model = alexnet.AlexNetModel(config.get_number_of_classes())
             print('Model is AlexNet')
         else:
@@ -176,6 +182,12 @@ def create_opt(opt_name, config, scheduler=None):
         optimizer = tf.keras.optimizers.Adam(
             learning_rate=config.get_learning_rate()
         )
+    
+    elif opt_name.upper() == 'NADAM':
+        optimizer = tf.keras.optimizers.Nadam(
+            learning_rate=config.get_learning_rate()
+        )
+
     else:
         optimizer = tf.keras.optimizers.SGD(
             learning_rate=config.get_learning_rate(),
@@ -206,7 +218,7 @@ def run_model(mode, model, opt, datasets, config, train_cbs=None, test_cbs=None)
         )
 
         # save history
-        saved_to = os.path.join(config.get_data_dir(), 'history.pkl')
+        saved_to = os.path.join(config.get_snapshot_dir(), 'history.pkl')
         with open(saved_to, 'wb') as file_pi:
             pickle.dump(history.history, file_pi)
 
