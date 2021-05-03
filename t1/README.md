@@ -12,4 +12,4 @@ Se modifica `train.py` para agregar modularidad. Esto facilita el trabajo en jup
 
 Se crea un nuevo Dataset *a medida*, ver `dataset.py`.
 
-Se crean clases para búsqueda de tasa de aprendizaje y tasa de aprendizaje cíclica, ver `custom.py`
+Se crean clases para búsqueda de tasa de aprendizaje óptima y tasa de aprendizaje cíclica, ver `custom.py`
