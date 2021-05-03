@@ -9,5 +9,7 @@ Se implementan 4 modelos:
 
 
 Se modifica `train.py` para agregar modularidad. Esto facilita el trabajo en jupyter notebooks.
+
 Se crea un nuevo Dataset *a medida*, ver `dataset.py`.
+
 Se crean clases para búsqueda de tasa de aprendizaje y tasa de aprendizaje cíclica.
