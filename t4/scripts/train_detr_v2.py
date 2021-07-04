@@ -144,7 +144,7 @@ def setup_dataset(cfg, split):
     """
     relative_path = Path('../data/')
 
-    update_coco_json(data_path)
+    update_coco_json(relative_path)
 
     if not Path('cocosplit.py').exists() and split:
         os.system('wget https://raw.githubusercontent.com/akarazniewicz/cocosplit/master/cocosplit.py')
