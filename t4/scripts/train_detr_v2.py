@@ -151,10 +151,10 @@ def setup_dataset(cfg, split):
     
     if split:
         os.system('python cocosplit.py --having-annotations -s 0.75 coco_train.json train.json val.json')
-        register_coco_instances("val", {}, "val.json", "")
+        register_coco_instances("val", {}, str(relative_path / "val.json"), "")
 
-    register_coco_instances("train", {}, "train.json", "")
-    register_coco_instances("test", {}, "test.json", "")
+    register_coco_instances("train", {}, str(relative_path / "train.json"), "")
+    register_coco_instances("test", {}, str(relative_path / "test.json"), "")
 
     cfg.DATASETS.TRAIN = ("train",)
 
