@@ -11,7 +11,6 @@ import itertools
 import os
 
 # Get the current working directory
-cwd = os.chdir  ()
 sys.path.insert(1, os.path.join(sys.path[0], '../detr'))
 # fmt: on
 
