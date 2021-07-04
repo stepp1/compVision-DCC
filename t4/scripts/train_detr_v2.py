@@ -133,7 +133,8 @@ def update_coco_json(data_path):
             image_dict['file_name']
             coco_dict['images'][idx] = image_dict
 
-        with open("train.json".format(keyword),"w") as outfile:
+        kw = json_file.split('_')[1]
+        with open("{}.json".format(kw),"w") as outfile:
             json.dump(coco_dict, outfile)
 
 def setup_dataset(cfg, split):
