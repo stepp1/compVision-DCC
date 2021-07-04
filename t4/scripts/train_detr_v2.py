@@ -171,9 +171,9 @@ if __name__ == "__main__":
     parser.add_argument("--split", type=str, default=n, help="whether to perform train split")
     args = args.parse_args()
 
-    if split == '-y':
+    if split == 'y':
         args.split = True  
-    elif split == '-n':
+    elif split == 'n':
         args.split = False
     else:
         raise ValueError('Incorrect arg.split value. Use -y or -n')
@@ -188,3 +188,6 @@ if __name__ == "__main__":
         dist_url=args.dist_url,
         args=(args,),
     )
+
+
+    # python train_detr_v2.py --num-gpus 2 --split n
