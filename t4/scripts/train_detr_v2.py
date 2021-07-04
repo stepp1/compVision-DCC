@@ -17,7 +17,8 @@ from typing import Any, Dict, List, Set
 import torch
 
 import detectron2.utils.comm as comm
-from detr.d2.train_net import add_detr_config, Trainer
+from d2.train_net import add_detr_config, Trainer
+
 from detectron2.checkpoint import DetectionCheckpointer
 from detectron2.config import get_cfg
 from detectron2.data import MetadataCatalog, build_detection_train_loader
@@ -108,12 +109,11 @@ def setup(args):
     """
     cfg = get_cfg()
     add_detr_config(cfg)
-    cfg.merge_from_file('detrd2/configs/detr_segm_256_6_6_torchvision.yaml')
+    cfg.merge_from_file('../detr/d2/configs/detr_segm_256_6_6_torchvision.yaml')
     cfg.merge_from_list(args.opts)
+    cfg = setup_dataset(cfg, args.split)
     cfg.freeze()
     default_setup(cfg, args)
-
-    cfg = setup_dataset(cfg, args.split)
     return cfg
 
 
@@ -168,12 +168,12 @@ def main(args):
 
 if __name__ == "__main__":
     parser = default_argument_parser()
-    parser.add_argument("--split", type=str, default=n, help="whether to perform train split")
-    args = args.parse_args()
+    parser.add_argument("--split", type=str, default='n', help="whether to perform train split")
+    args = parser.parse_args()
 
-    if split == 'y':
+    if args.split == 'y':
         args.split = True  
-    elif split == 'n':
+    elif args.split == 'n':
         args.split = False
     else:
         raise ValueError('Incorrect arg.split value. Use -y or -n')
@@ -190,4 +190,4 @@ if __name__ == "__main__":
     )
 
 
-    # python train_detr_v2.py --num-gpus 2 --split n
+    # python train_detr_v2.py --num-gpus 2
