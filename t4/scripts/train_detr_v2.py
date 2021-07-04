@@ -8,6 +8,10 @@ import sys
 import itertools
 
 # fmt: off
+import os
+
+# Get the current working directory
+cwd = os.chdir  ()
 sys.path.insert(1, os.path.join(sys.path[0], '../detr'))
 # fmt: on
 
@@ -121,24 +125,37 @@ from detectron2.data.datasets.coco import register_coco_instances, convert_to_co
 from pathlib import Path
 import os
 
+def update_coco_json(data_path):
+    root_path = Path(data_path.parts[0])
+
+    for json_file in root_path.glob('coco*json'):
+        coco_dict = json.load(open(json_file))
+
+        for idx, image_dict in coco_dict['images']:
+            new_data_path = image_dict['file_name'].replace('data/', str(data_path))
+            image_dict['file_name']
+            coco_dict['images'][idx] = image_dict
+
+        with open("train.json".format(keyword),"w") as outfile:
+            json.dump(coco_dict, outfile)
+
 def setup_dataset(cfg, split):
     """
     Updates config to new dataset.
     """
-    data_path = Path('data/SpermSegGS/')
+    relative_path = Path('../data/')
+
+    update_coco_json(data_path)
 
     if not Path('cocosplit.py').exists() and split:
         os.system('wget https://raw.githubusercontent.com/akarazniewicz/cocosplit/master/cocosplit.py')
     
     if split:
         os.system('python cocosplit.py --having-annotations -s 0.75 coco_train.json train.json val.json')
-
-        register_coco_instances("train", {}, "train.json", "")
         register_coco_instances("val", {}, "val.json", "")
 
-    else:
-        register_coco_instances("train", {}, "../coco_train.json", "")
-    register_coco_instances("test", {}, "../coco_test.json", "")
+    register_coco_instances("train", {}, "train.json", "")
+    register_coco_instances("test", {}, "test.json", "")
 
     cfg.DATASETS.TRAIN = ("train",)
 
