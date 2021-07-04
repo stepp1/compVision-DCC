@@ -133,7 +133,9 @@ def update_coco_json(root_path):
             coco_dict['images'][idx] = image_dict
 
         kw = str(json_file).split('_')[1]
-        with open(root_path / "{}.json".format(kw),"w") as outfile:
+        filename = root_path / "{}.json".format(kw)
+        print(filename)
+        with open(filename,"w") as outfile:
             json.dump(coco_dict, outfile)
 
 def setup_dataset(cfg, split):
