@@ -133,19 +133,19 @@ def setup_dataset(cfg, split):
     if split:
         os.system('python cocosplit.py --having-annotations -s 0.75 coco_train.json train.json val.json')
 
-        register_coco_instances("sperm-train", {}, "train.json", "")
-        register_coco_instances("sperm-val", {}, "val.json", "")
+        register_coco_instances("train", {}, "train.json", "")
+        register_coco_instances("val", {}, "val.json", "")
 
     else:
-        register_coco_instances("sperm-val", {}, "coco_train.json", "")
-    register_coco_instances("sperm-test", {}, "coco_test.json", "")
+        register_coco_instances("train", {}, "coco_train.json", "")
+    register_coco_instances("test", {}, "coco_test.json", "")
 
-    cfg.DATASETS.TRAIN = ("sperm-train",)
+    cfg.DATASETS.TRAIN = ("train",)
 
     if split:
-        cfg.DATASETS.TEST = ("sperm-test",)
+        cfg.DATASETS.TEST = ("test",)
     else:
-        cfg.DATASETS.TEST = ("sperm-val",)
+        cfg.DATASETS.TEST = ("val",)
 
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = 3  
     # cfg.INPUT.FORMAT
