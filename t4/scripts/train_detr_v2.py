@@ -133,7 +133,7 @@ def update_coco_json(data_path):
             image_dict['file_name']
             coco_dict['images'][idx] = image_dict
 
-        kw = json_file.split('_')[1]
+        kw = str(json_file).split('_')[1]
         with open("{}.json".format(kw),"w") as outfile:
             json.dump(coco_dict, outfile)
 
