@@ -128,7 +128,7 @@ def update_coco_json(data_path):
     for json_file in root_path.glob('coco*json'):
         coco_dict = json.load(open(json_file))
 
-        for idx, image_dict in coco_dict['images']:
+        for idx, image_dict in enumerate(coco_dict['images']):
             new_data_path = image_dict['file_name'].replace('data/', str(data_path))
             image_dict['file_name']
             coco_dict['images'][idx] = image_dict
