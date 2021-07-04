@@ -122,26 +122,25 @@ from detectron2.data.datasets.coco import register_coco_instances, convert_to_co
 from pathlib import Path
 import os
 
-def update_coco_json(data_path):
-    root_path = Path(data_path.parts[0])
+def update_coco_json(root_path):
 
     for json_file in root_path.glob('coco*json'):
         coco_dict = json.load(open(json_file))
 
         for idx, image_dict in enumerate(coco_dict['images']):
-            new_data_path = image_dict['file_name'].replace('data/', str(data_path))
-            image_dict['file_name']
+            new_data_path = str(root_path / image_dict['file_name'])
+            image_dict['file_name'] = new_data_path
             coco_dict['images'][idx] = image_dict
 
         kw = str(json_file).split('_')[1]
-        with open("{}.json".format(kw),"w") as outfile:
+        with open(root_path / "{}.json".format(kw),"w") as outfile:
             json.dump(coco_dict, outfile)
 
 def setup_dataset(cfg, split):
     """
     Updates config to new dataset.
     """
-    relative_path = Path('../data/')
+    relative_path = Path('../')
 
     update_coco_json(relative_path)
 
