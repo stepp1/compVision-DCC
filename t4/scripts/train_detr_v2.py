@@ -6,10 +6,8 @@ This script is a simplified version of the training script in detectron2/tools.
 import os
 import sys
 import itertools
-
+import json
 # fmt: off
-import os
-
 # Get the current working directory
 sys.path.insert(1, os.path.join(sys.path[0], '../detr'))
 # fmt: on
