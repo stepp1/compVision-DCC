@@ -126,12 +126,17 @@ def update_coco_json(root_path):
 
     for json_file in root_path.glob('coco*json'):
         coco_dict = json.load(open(json_file))
+        
+        new_images = []
 
         for idx, image_dict in enumerate(coco_dict['images']):
             new_data_path = str(root_path / image_dict['file_name'])
             print(new_data_path)
             image_dict['file_name'] = new_data_path
-            coco_dict['images'][idx] = image_dict
+
+            new_images.append(image_dict)
+            
+        coco_dict['images'] = new_images
 
         kw = str(json_file).split('_')[1]
         filename = root_path / "{}.json".format(kw)
