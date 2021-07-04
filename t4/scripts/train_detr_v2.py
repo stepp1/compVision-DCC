@@ -17,7 +17,7 @@ from typing import Any, Dict, List, Set
 import torch
 
 import detectron2.utils.comm as comm
-from d2.train_net import add_detr_config, Trainer
+from d2.train_net import add_detr_config, DetrDatasetMapper
 
 from detectron2.checkpoint import DetectionCheckpointer
 from detectron2.config import get_cfg
