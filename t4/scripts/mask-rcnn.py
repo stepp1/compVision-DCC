@@ -6,11 +6,6 @@ import torch
 print(torch.cuda.is_available())
 print(torch.version.cuda)
 
-# conda install -c omgarcia gcc-6 # install GCC version 6
-# conda install libgcc
-
-
-
 import detectron2
 from detectron2.utils.logger import setup_logger
 setup_logger()
