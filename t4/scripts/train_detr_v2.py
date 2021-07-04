@@ -137,8 +137,8 @@ def setup_dataset(cfg, split):
         register_coco_instances("val", {}, "val.json", "")
 
     else:
-        register_coco_instances("train", {}, "coco_train.json", "")
-    register_coco_instances("test", {}, "coco_test.json", "")
+        register_coco_instances("train", {}, "../coco_train.json", "")
+    register_coco_instances("test", {}, "../coco_test.json", "")
 
     cfg.DATASETS.TRAIN = ("train",)
 
