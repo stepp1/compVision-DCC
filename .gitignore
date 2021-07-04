@@ -151,3 +151,7 @@ t4/data
 t4/utils/.idea/
 t3/*.png
 presentation/*
+t3/models/best_checks-frcnn.pth
+t3/models/best_checks-trident.pth
+t3/models/best_mnist-frcnn.pth
+t3/models/best-checks.pth
