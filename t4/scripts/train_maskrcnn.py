@@ -17,22 +17,28 @@ from collections import OrderedDict
 import torch
 
 import detectron2.utils.comm as comm
+
 from detectron2.checkpoint import DetectionCheckpointer
 from detectron2.config import get_cfg
 from detectron2.engine import DefaultTrainer, default_argument_parser, default_setup, hooks, launch
 
 import sys
-import os
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
+
 from detectron2 import model_zoo
 from utils.trainer import MyTrainer
 from detectron2.data import build_detection_train_loader
+from detectron2.data import detection_utils as utils
 from detectron2.evaluation import COCOEvaluator
 from detectron2.modeling import GeneralizedRCNNWithTTA
+
 import detectron2.data.transforms as T
 from pathlib import Path
 
+from detectron2.data.datasets.coco import register_coco_instances, convert_to_coco_dict
+
 import copy
+import json
 
 class InvertColors(T.Augmentation):
     def get_transform(self, image):
@@ -87,10 +93,8 @@ class Trainer(MyTrainer):
         res = OrderedDict({k + "_TTA": v for k, v in res.items()})
         return res
 
-from detectron2.data.datasets.coco import register_coco_instances, convert_to_coco_dict
-from pathlib import Path
-import os
-import json
+
+
 
 def update_coco_json(root_path):
 
