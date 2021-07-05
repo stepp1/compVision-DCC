@@ -153,7 +153,7 @@ def setup_dataset(cfg, split):
         cfg.DATASETS.TEST = ("val",)
     else:
         cfg.DATASETS.TEST = ("test",)
-    cfg.SOLVER.IMS_PER_BATCH = 20
+    cfg.SOLVER.IMS_PER_BATCH = 2
     cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 32 
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = 3  
     cfg.TEST.AUG.ENABLED = True
