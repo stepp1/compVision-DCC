@@ -140,7 +140,6 @@ def update_coco_json(root_path):
 
         kw = str(json_file).split('_')[1]
         filename = root_path / "{}".format(kw)
-        print(filename)
         with open(filename,"w") as outfile:
             json.dump(coco_dict, outfile)
 
@@ -168,7 +167,8 @@ def setup_dataset(cfg, split):
         cfg.DATASETS.TEST = ("test",)
     else:
         cfg.DATASETS.TEST = ("val",)
-
+    cfg.SOLVER.IMS_PER_BATCH = 1
+    cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 32 
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = 3  
     # cfg.INPUT.FORMAT
     return cfg
