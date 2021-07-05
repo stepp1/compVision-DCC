@@ -32,6 +32,8 @@ from detectron2.modeling import GeneralizedRCNNWithTTA
 import detectron2.data.transforms as T
 from pathlib import Path
 
+import copy
+
 class InvertColors(T.Augmentation):
     def get_transform(self, image):
         return T.ColorTransform(lambda x: 255-x)
