@@ -1,0 +1,6 @@
+[submodule "examen/examen/centermask2"]
+	path = examen/examen/centermask2
+	url = https://github.com/youngwanLEE/centermask2.git
+[submodule "examen/centermask2"]
+	path = examen/centermask2
+	url = https://github.com/youngwanLEE/centermask2.git
