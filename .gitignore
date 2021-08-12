@@ -1,5 +1,5 @@
 /.idea/
-/*/.idea/
+.idea/
 /*/data/
 /*/snapshots/
 /*/__pycache__/
@@ -7,6 +7,8 @@
 balloon/
 output/
 *.pth
+coco_instances_results.json
+logs/
 
 # ========== PYTHON RELATED ============= #
 
