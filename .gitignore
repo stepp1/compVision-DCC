@@ -9,6 +9,8 @@ output/
 *.pth
 coco_instances_results.json
 logs/
+*.pkl
+*.png
 
 # ========== PYTHON RELATED ============= #
 
