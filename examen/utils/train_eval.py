@@ -7,6 +7,8 @@ import random
 import cv2
 import os
 
+import logging
+
 import remo
 
 import detectron2
@@ -22,9 +24,9 @@ class Evaluation:
     def __init__(self, cfg, test_set : str, default_pred_cfg : bool = True):
         self.cfg = cfg
         self.config.DATASETS.TEST = (test_set,)
+        self.config.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, 'model_final.pth')
         self.predictor = None
         if default_pred_cfg:
-            self.config.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, 'model_final.pth')
             self.config.MODEL.ROI_HEADS.NMS_THRESH_TEST = 0.4 # original 0.5
             self.config.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.4  # set the testing threshold for this model
 
@@ -80,12 +82,13 @@ class Evaluation:
 
         return test_annots
 
-    def show_n(self, dataset_dicts, metadata, n = 3, predictions = False):
+    def show_n(self, dataset_dicts, metadata, n = 3, predictions = False, add_info = False):
         self.cfg = self.cfg
-        Evaluation._show_n(dataset_dicts, metadata, n, predictions, predictor=self.predictor)
+        f = Evaluation._show_n(dataset_dicts, metadata, n, predictions, predictor=self.predictor, add_info = add_info)
+        return f
 
     @staticmethod
-    def _show_n(dataset_dicts, metadata, n = 3, predictions = False, predictor = None):
+    def _show_n(dataset_dicts, metadata, n = 3, predictions = False, predictor = None, add_info = False):
         f, axs = plt.subplots(
             nrows=2 if n//2 > 2 else 1, 
             ncols=n//2 if n//2 > 2 else n, 
@@ -93,18 +96,35 @@ class Evaluation:
             )
 
         for idx, d in enumerate(random.sample(dataset_dicts, 3)): 
+            title = ""
+            if add_info: 
+                img_fname, n_annots = d["file_name"].split('/')[-1], len(d["annotations"])
+                title = f"image: {img_fname} \nGT has {n_annots} annotations"
+                
             im = cv2.imread(d["file_name"])
             if predictions:
-                out = Evaluation.draw(im, metadata, predictions=True, predictor = predictor)
+                out = Evaluation.draw(
+                    im, 
+                    metadata, 
+                    predictions=True, 
+                    predictor = predictor, 
+                    add_info = add_info
+                )
+                if add_info:
+                    n_preds, out = out["n_annots"], out["out"]
+                    title += f"\n Model predicted {n_preds}"
             else:
-                out = Evaluation.draw(im, metadata, dataset_dict=d)
+                out = Evaluation.draw(im, metadata, dataset_dict=d,)
             axs[idx].imshow(out.get_image()[:, :, ::-1])
             axs[idx].axis("off")
+            axs[idx].set_title(title)
             
+        plt.tight_layout()
         plt.show()
+        return f
         
     @staticmethod
-    def draw(im : np.ndarray, metadata : Metadata, predictions = False, dataset_dict = None, predictor = None):
+    def draw(im : np.ndarray, metadata : Metadata, predictions = False, dataset_dict = None, predictor = None, add_info = False):
         v = Visualizer(im[:, :, ::-1],
                     metadata=metadata, 
                     scale=0.5, 
@@ -113,7 +133,11 @@ class Evaluation:
 
         if predictions:
             outputs = predictor(im) 
+            if len(outputs["instances"]) == 0: 
+                logger = logging.getLogger("detectron2")
+                logger.warning("Model made 0 predictions!")
             out = v.draw_instance_predictions(outputs["instances"].to("cpu"))
+            out = {"out": out, "n_annots": len(outputs["instances"])} if add_info else out
         elif dataset_dict is not None:
             out = v.draw_dataset_dict(dataset_dict)
         else:

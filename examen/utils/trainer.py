@@ -14,17 +14,10 @@ class InvertColors(T.Augmentation):
     def get_transform(self, image):
         return T.ColorTransform(lambda x: 255-x)
 
-def custom_mapper(dataset_dict):
+def custom_mapper(dataset_dict, transform_list):
     dataset_dict = copy.deepcopy(dataset_dict)  # it will be modified by code below
     image = utils.read_image(dataset_dict["file_name"], format="BGR")
-    transform_list = [
-        T.Resize((600,400)),
-        T.PadTransform(10, 10, 10, 10),
-        T.RandomBrightness(0.8, 1.8),
-        T.RandomContrast(0.6, 1.3),
-        T.RandomSaturation(0.8, 1.4),
-        T.RandomLighting(0.7),
-    ]
+    
     image, transforms = T.apply_transform_gens(transform_list, image)
     dataset_dict["image"] = torch.as_tensor(image.transpose(2, 0, 1).astype("float32"))
 
