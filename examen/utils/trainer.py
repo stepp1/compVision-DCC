@@ -8,7 +8,7 @@ import torch
 import copy
 import os
 
-from .hooks import ValidationHook
+from hooks import ValidationHook
 
 class InvertColors(T.Augmentation):
     def get_transform(self, image):
@@ -34,27 +34,27 @@ class MyTrainer(DefaultTrainer):
     def __init__(self, cfg, val_loss=True, bs=64):
         self._val_loss = val_loss
         self._bs = bs
-        super(DefaultTrainer, self).__init__(cfg)
+        super().__init__(cfg)
 
-    @classmethod
-    def build_train_loader(cls, cfg):
-        return build_detection_train_loader(cfg, mapper=custom_mapper)
+#     @classmethod
+#     def build_train_loader(cls, cfg):
+#         return build_detection_train_loader(cfg, mapper=custom_mapper)
     
-    @classmethod
-    def build_evaluator(cls, cfg, dataset_name, output_folder=None):
-        if output_folder is None:
-            output_folder = os.path.join(cfg.OUTPUT_DIR, "inference")
-        return COCOEvaluator(dataset_name, cfg, True, output_folder)
+#     @classmethod
+#     def build_evaluator(cls, cfg, dataset_name, output_folder=None):
+#         if output_folder is None:
+#             output_folder = os.path.join(cfg.OUTPUT_DIR, "inference")
+#         return COCOEvaluator(dataset_name, cfg, True, output_folder)
 
     def build_hooks(self):
         hooks = super().build_hooks()
         hooks.insert(-1, ValidationHook(
             self.cfg.TEST.EVAL_PERIOD,
             self.model,
-            build_detection_test_loader(
-                self.cfg,
-                self.cfg.DATASETS.TEST[0],
-                DatasetMapper(self.cfg, True)
+            build_detection_train_loader(
+                dataset=self.cfg.DATASETS.TEST[0],
+                mapper=DatasetMapper(self.cfg, is_train=False),
+                total_batch_size=16
             ),
             patience = 3
         ))
